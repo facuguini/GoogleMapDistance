@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h3>Calcular precio</h3>
+<form id="calculate">
+  <div class="row">
+    <div class="col-xs-2">
+      <label for="Address">Dirección</label>
+    </div>
+    <div class="col-xs-8">
+      <input class="form-control" id="Address" name="Address" placeholder="Calle numero, localidad, provincia, pais" />
+    </div>
+    <div class="col-xs-2">
+      <button class="btn btn-primary">Calcular</button>
+    </div>
+  </div>
+</form>
+<div id="result" class="row" style="display:none;margin-top: 25px;">
+  <div class="col-xs-6">
+    <p><span style="font-weight:bold;">Distancia</span>: <span id="distance"></span></p>
+  </div>
+  <div class="col-xs-6">
+    <p><span style="font-weight:bold;">Precio</span>: $<span id="price"></span></p>
+  </div>
+</div>
+
+@section scripts {
+<script>
+  $(document).ready(function() {
+    var searchBox = new google.maps.places.SearchBox(document.getElementById('Address'));
+    $('#calculate').submit(function(e) {
+      e.preventDefault();
+      $.get('/Price?' + $(e.target).serialize(), function(data) {
+        $('#distance').text(data.Distance);
+        $('#price').text(data.Price);
+        $('#result').show();
+      });
+    });
+  });
+</script>
+}
