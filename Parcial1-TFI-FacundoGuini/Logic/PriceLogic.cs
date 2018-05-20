@@ -1,4 +1,5 @@
-﻿using Parcial1_TFI_FacundoGuini.Entities;
+﻿using Parcial1_TFI_FacundoGuini.Configs;
+using Parcial1_TFI_FacundoGuini.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,32 @@ namespace Parcial1_TFI_FacundoGuini.Logic
 {
     public class PriceLogic
     {
-        const int LIMIT_DISTANCE = 10000;
-        const double MIN_PRICE = 80.0;
-        const double PRICE_PER_KM = 10.0;
+        private int LIMIT_DISTANCE;
+        private double MIN_PRICE;
+        private double PRICE_PER_KM;
 
-        public async Task<PriceResponse> get(string address)
+        public PriceLogic()
         {
-            var distance = await new DistanceLogic().get(address);
+            Dictionary<string, object> configs = (Dictionary<string, object>)new ConfigManager().Get("PRICE");
+            LIMIT_DISTANCE = Convert.ToInt32(configs["limit"]);
+            MIN_PRICE = Convert.ToDouble(configs["min"]);
+            PRICE_PER_KM = Convert.ToDouble(configs["km"]);
+        }
+
+        public async Task<PriceResponse> Get(string address, string shipmentTypeName, string vehicleName)
+        {
+            var distance = await new DistanceLogic().Get(address);
+            var vehicle = new VehicleLogic().GetByName(vehicleName);
+            var shipmentType = new ShipmentTypeLogic().GetByName(shipmentTypeName);
             return new PriceResponse()
             {
                 Distance = distance.text,
-                Price = calculate(distance.value)
+                Price = calculate(distance.value, shipmentType, vehicle),
+                DeliveryDateRange = new DateLogic().Get(shipmentType)
             };
         }
 
-        public double calculate(int distance)
+        public double calculate(int distance, ShipmentType type, Vehicle vehicle)
         {
             double price = MIN_PRICE;
             if (distance > LIMIT_DISTANCE)
@@ -35,7 +47,7 @@ namespace Parcial1_TFI_FacundoGuini.Logic
                     price += PRICE_PER_KM;
                 }
             }
-            return price;
+            return price * type.Price * vehicle.Price;
         }
     }
 }

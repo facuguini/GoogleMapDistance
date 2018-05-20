@@ -10,7 +10,7 @@ namespace Parcial1_TFI_FacundoGuini.Logic
 {
     public class DistanceLogic
     {
-        public async Task<Distance> get(string address)
+        public async Task<Distance> Get(string address)
         {
             var response = await new GoogleMaps().GetData(address);
             return response.Routes[0].Legs[0].Distance;

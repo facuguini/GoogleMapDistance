@@ -16,7 +16,7 @@ namespace Parcial1_TFI_FacundoGuini.Controllers
         {
             return new JsonResult()
             {
-                Data = await new PriceLogic().get(req.Address),
+                Data = await new PriceLogic().Get(req.Address, req.ShipmentType, req.Vehicle),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }

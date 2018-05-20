@@ -153,16 +153,25 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Configs\ConfigManager.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PriceController.cs" />
+    <Compile Include="Controllers\TypeController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
+    <Compile Include="Entities\DateRange.cs" />
     <Compile Include="Entities\GoogleMapsDistanceResponse.cs" />
     <Compile Include="Entities\PriceRequest.cs" />
     <Compile Include="Entities\PriceResponse.cs" />
+    <Compile Include="Entities\ShipmentType.cs" />
+    <Compile Include="Entities\Vehicle.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\DateLogic.cs" />
     <Compile Include="Logic\DistanceLogic.cs" />
     <Compile Include="Logic\PriceLogic.cs" />
+    <Compile Include="Logic\ShipmentTypeLogic.cs" />
+    <Compile Include="Logic\VehicleLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +186,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configs\Price.json" />
+    <Content Include="Configs\Vehicle.json" />
+    <Content Include="Configs\Type.json" />
+    <None Include="Properties\PublishProfiles\Parcial1TFIFacundoGuini - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -205,6 +218,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Price\" />
+    <Folder Include="Views\Type\" />
+    <Folder Include="Views\Vehicle\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

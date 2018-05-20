@@ -1,0 +1,32 @@
+﻿[
+  {
+    "name": "Moto",
+    "dimension": {
+      "height": 30,
+      "width": 30,
+      "length": 30
+    },
+    "weight": 5000,
+    "price": 1
+  },
+  {
+    "name": "Camioneta",
+    "dimension": {
+      "height": 100,
+      "width": 100,
+      "length": 100
+    },
+    "weight": 15000,
+    "price": 1.03
+  },
+  {
+    "name": "Camion",
+    "dimension": {
+      "height": 400,
+      "width": 400,
+      "length": 400
+    },
+    "weight": 60000,
+    "price": 1.16
+  }
+]

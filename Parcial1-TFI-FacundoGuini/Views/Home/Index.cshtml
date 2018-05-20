@@ -5,38 +5,100 @@
 <h3>Calcular precio</h3>
 <form id="calculate">
   <div class="row">
-    <div class="col-xs-2">
+    <div class="col-xs-12">
       <label for="Address">Dirección</label>
-    </div>
-    <div class="col-xs-8">
       <input class="form-control" id="Address" name="Address" placeholder="Calle numero, localidad, provincia, pais" />
     </div>
-    <div class="col-xs-2">
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <label>Tipo de Envío</label>
+      <div id="types"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <label>Vehiculo</label>
+      <div id="vehicles"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-offset-10 col-xs-2">
       <button class="btn btn-primary">Calcular</button>
     </div>
   </div>
 </form>
 <div id="result" class="row" style="display:none;margin-top: 25px;">
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <p><span style="font-weight:bold;">Distancia</span>: <span id="distance"></span></p>
   </div>
-  <div class="col-xs-6">
+  <div class="col-xs-4">
     <p><span style="font-weight:bold;">Precio</span>: $<span id="price"></span></p>
+  </div>
+  <div class="col-xs-4">
+    <p><span style="font-weight:bold;">Fecha de entrega</span>: <span id="date-range"></span></p>
   </div>
 </div>
 
 @section scripts {
 <script>
   $(document).ready(function() {
+    // GET TYPES
+    $.get('/Type', function(types) {
+      var container = $('#types');
+      types.forEach(function(t, i) {
+        var checked = !i ? 'checked' : '';
+        var description;
+        if (t.Days.Min !== t.Days.Max) {
+          description = 'Entre ' + t.Days.Min + ' y ' + t.Days.Max + ' dias hábiles';
+        } else {
+          var pluralizrD = t.Days.Min > 1 ? 's' : '';
+          var pluralizrH = t.Days.Min > 1 ? 'es' : '';
+          description = 'En ' + t.Days.Min + ' dia' + pluralizrD + ' hábil' + pluralizrH;
+        }
+        container.append('<label class="radio-inline" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="' + description + '"><input type="radio" id="' + t.Name + '" name="ShipmentType" value="' + t.Name + '" ' + checked + '/>' + t.Name + '</label>');
+      });
+      $('[data-toggle="popover"]').popover();   
+    });
+
+    // GET VEHICLES
+    $.get('/Vehicle', function(vehicles) {
+      var container = $('#vehicles');
+      vehicles.forEach(function(v, i) {
+        var checked = !i ? 'checked' : '';
+        var description = 'Dimensiones maximas(cm): ' + v.Dimension.Height + 'x' + v.Dimension.Width + 'x' + v.Dimension.Length + '<br />' +
+          'Peso maximo: ' + v.Weight + 'g';
+        container.append('<label class="radio-inline" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-html="true" data-content="' + description + '"><input type="radio" id="' + v.Name + '" name="Vehicle" value="' + v.Name + '" ' + checked + '/>' + v.Name + '</label>');
+      });
+      $('[data-toggle="popover"]').popover();   
+    });
+
+    // INIT SEARCHBOX
     var searchBox = new google.maps.places.SearchBox(document.getElementById('Address'));
+
+    // SUBMIT CALLBACK
     $('#calculate').submit(function(e) {
       e.preventDefault();
       $.get('/Price?' + $(e.target).serialize(), function(data) {
+        var sameDay = data.DeliveryDateRange.Max === data.DeliveryDateRange.Min;
+        data.DeliveryDateRange.Max = new Date(parseInt(data.DeliveryDateRange.Max.replace(/\//g, '').replace('Date(', '').replace(')', '')));
+        data.DeliveryDateRange.Min = new Date(parseInt(data.DeliveryDateRange.Min.replace(/\//g, '').replace('Date(', '').replace(')', '')));
+        var dateRange;
+        if (sameDay) {
+          dateRange = _parseDate(data.DeliveryDateRange.Max);
+        } else {
+          dateRange = 'Entre ' + _parseDate(data.DeliveryDateRange.Min) + ' y ' + _parseDate(data.DeliveryDateRange.Max);
+        }
+        $('#date-range').text(dateRange);
         $('#distance').text(data.Distance);
-        $('#price').text(data.Price);
+        $('#price').text(data.Price.toFixed(2));
         $('#result').show();
       });
     });
+
+    function _parseDate(date) {
+      return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    }
   });
 </script>
 }
