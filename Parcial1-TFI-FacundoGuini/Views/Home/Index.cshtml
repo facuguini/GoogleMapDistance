@@ -74,7 +74,10 @@
     });
 
     // INIT SEARCHBOX
-    var searchBox = new google.maps.places.SearchBox(document.getElementById('Address'));
+    var platform = new H.service.Platform({
+      app_id: 'qpZx8OkZV6G7mSDEj6bo',
+      app_code: 'ALF9e8JyZTB4s_2AwlDLQw'
+    });
 
     // SUBMIT CALLBACK
     $('#calculate').submit(function(e) {

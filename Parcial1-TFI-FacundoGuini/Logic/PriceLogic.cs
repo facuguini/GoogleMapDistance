@@ -29,8 +29,8 @@ namespace Parcial1_TFI_FacundoGuini.Logic
             var shipmentType = new ShipmentTypeLogic().GetByName(shipmentTypeName);
             return new PriceResponse()
             {
-                Distance = distance.text,
-                Price = calculate(distance.value, shipmentType, vehicle),
+                Distance = string.Format("{0} km", Math.Round((double) distance / 1000, 2)),
+                Price = calculate(distance, shipmentType, vehicle),
                 DeliveryDateRange = new DateLogic().Get(shipmentType)
             };
         }

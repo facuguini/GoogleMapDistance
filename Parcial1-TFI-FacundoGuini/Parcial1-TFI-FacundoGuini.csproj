@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\GoogleMaps.cs" />
+    <Compile Include="API\Here.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -160,6 +161,8 @@
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Entities\DateRange.cs" />
     <Compile Include="Entities\GoogleMapsDistanceResponse.cs" />
+    <Compile Include="Entities\HereGeocoder.cs" />
+    <Compile Include="Entities\HereResponse.cs" />
     <Compile Include="Entities\PriceRequest.cs" />
     <Compile Include="Entities\PriceResponse.cs" />
     <Compile Include="Entities\ShipmentType.cs" />
@@ -189,6 +192,7 @@
     <Content Include="Configs\Price.json" />
     <Content Include="Configs\Vehicle.json" />
     <Content Include="Configs\Type.json" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Parcial1TFIFacundoGuini - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
